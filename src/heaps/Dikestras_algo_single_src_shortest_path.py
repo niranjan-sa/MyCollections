@@ -3,6 +3,8 @@ class Solution:
       """
       Time Complexity - > For E edges and V vertices -> O(E + VLogV) for Fibonacci Heap
       Space Complexity -> O(V)
+      Short come of this Algorithm is that it cannot process graph with negative edges. 
+      This is used over BFS because, BFS only works on unweighted graphs. 
       """
         import heapq
         pq = [(0, src, -1)]
