@@ -2,7 +2,7 @@
 Single pair shortest Path. Bellman Ford.
 Also detect negative weight cycle. (this is short coming of Dijkstra Algorithm)
 
-O
+O(VE) more time complexity than Dijkstra's algorithm.
 """
 
 # Class to represent a graph
