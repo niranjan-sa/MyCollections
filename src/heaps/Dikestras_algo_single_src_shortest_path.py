@@ -7,6 +7,7 @@ class Solution:
       This is used over BFS because, BFS only works on unweighted graphs. 
       """
         import heapq
+        # The tuple is of form <distance, Node, parent>
         pq = [(0, src, -1)]
         graph = defaultdict(list)
 
