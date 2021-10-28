@@ -1,4 +1,8 @@
 import java.util.*; 
+/*
+O(|E| + |V| Log |V|)
+
+*/
 class Graph_pq { 
     int dist[]; 
     Set<Integer> visited; 
