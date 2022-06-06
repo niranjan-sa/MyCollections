@@ -52,7 +52,7 @@ class Solution:
                 # go right
                 quickselect(left, true_idx)
                 
-                
+        # Just building the nums array         
         nums = inorder(root)
         dist = lambda idx : abs(nums[idx] - target)
         quickselect(0, len(nums) - 1)
