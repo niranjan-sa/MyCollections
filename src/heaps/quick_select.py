@@ -42,36 +42,61 @@ or smaller item based on the index.
 We're looking for the smallest item, which is 5.
 return 5
 """
-def quickselect_median(l, pivot_fn=random.choice):
-    if len(l) % 2 == 1:
-        return quickselect(l, len(l) // 2, pivot_fn)
-    else:
-        return 0.5 * (quickselect(l, len(l) / 2 - 1, pivot_fn) +
-                      quickselect(l, len(l) / 2, pivot_fn))
+# Python3 program of Quick Select
 
+# Standard partition process of QuickSort().
+# It considers the last element as pivot
+# and moves all smaller element to left of
+# it and greater elements to right
+def partition(arr, l, r):
+	
+	x = arr[r]
+	i = l
+	for j in range(l, r):
+		
+		if arr[j] <= x:
+			arr[i], arr[j] = arr[j], arr[i]
+			i += 1
+			
+	arr[i], arr[r] = arr[r], arr[i]
+	return i
 
-def quickselect(l, k, pivot_fn):
-    """
-    Select the kth element in l (0 based)
-    :param l: List of numerics
-    :param k: Index
-    :param pivot_fn: Function to choose a pivot, defaults to random.choice
-    :return: The kth element of l
-    """
-    if len(l) == 1:
-        assert k == 0
-        return l[0]
+# finds the kth position (of the sorted array)
+# in a given unsorted array i.e this function
+# can be used to find both kth largest and
+# kth smallest element in the array.
+# ASSUMPTION: all elements in arr[] are distinct
+def kthSmallest(arr, l, r, k):
 
-    pivot = pivot_fn(l)
+	# if k is smaller than number of
+	# elements in array
+	if (k > 0 and k <= r - l + 1):
 
-    lows = [el for el in l if el < pivot]
-    highs = [el for el in l if el > pivot]
-    pivots = [el for el in l if el == pivot]
+		# Partition the array around last
+		# element and get position of pivot
+		# element in sorted array
+		index = partition(arr, l, r)
 
-    if k < len(lows):
-        return quickselect(lows, k, pivot_fn)
-    elif k < len(lows) + len(pivots):
-        # We got lucky and guessed the median
-        return pivots[0]
-    else:
-        return quickselect(highs, k - len(lows) - len(pivots), pivot_fn)
+		# if position is same as k
+		if (index - l == k - 1):
+			return arr[index]
+
+		# If position is more, recur
+		# for left subarray
+		if (index - l > k - 1):
+			return kthSmallest(arr, l, index - 1, k)
+
+		# Else recur for right subarray
+		return kthSmallest(arr, index + 1, r,
+							k - index + l - 1)
+	print("Index out of bound")
+
+# Driver Code
+arr = [ 10, 4, 5, 8, 6, 11, 26 ]
+n = len(arr)
+k = 3
+print("K-th smallest element is ", end = "")
+print(kthSmallest(arr, 0, n - 1, k))
+
+# This code is contributed by Muskan Kalra.
+
