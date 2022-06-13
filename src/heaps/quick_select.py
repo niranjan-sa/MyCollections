@@ -47,56 +47,74 @@ return 5
 # Standard partition process of QuickSort().
 # It considers the last element as pivot
 # and moves all smaller element to left of
-# it and greater elements to right
-def partition(arr, l, r):
-	
-	x = arr[r]
-	i = l
-	for j in range(l, r):
-		
-		if arr[j] <= x:
-			arr[i], arr[j] = arr[j], arr[i]
-			i += 1
-			
-	arr[i], arr[r] = arr[r], arr[i]
-	return i
-
-# finds the kth position (of the sorted array)
-# in a given unsorted array i.e this function
-# can be used to find both kth largest and
-# kth smallest element in the array.
-# ASSUMPTION: all elements in arr[] are distinct
-def kthSmallest(arr, l, r, k):
-
-	# if k is smaller than number of
-	# elements in array
-	if (k > 0 and k <= r - l + 1):
-
-		# Partition the array around last
-		# element and get position of pivot
-		# element in sorted array
-		index = partition(arr, l, r)
-
-		# if position is same as k
-		if (index - l == k - 1):
-			return arr[index]
-
-		# If position is more, recur
-		# for left subarray
-		if (index - l > k - 1):
-			return kthSmallest(arr, l, index - 1, k)
-
-		# Else recur for right subarray
-		return kthSmallest(arr, index + 1, r,
-							k - index + l - 1)
-	print("Index out of bound")
-
-# Driver Code
-arr = [ 10, 4, 5, 8, 6, 11, 26 ]
-n = len(arr)
-k = 3
-print("K-th smallest element is ", end = "")
-print(kthSmallest(arr, 0, n - 1, k))
-
-# This code is contributed by Muskan Kalra.
+# it and greater elements to rightfrom random import randint
+ 
+def swap(nums, i, j):
+    temp = nums[i]
+    nums[i] = nums[j]
+    nums[j] = temp
+ 
+ 
+# Partition using Lomuto partition scheme
+def partition(nums, left, right, pIndex):
+ 
+    # Pick `pIndex` as a pivot from the list
+    pivot = nums[pIndex]
+ 
+    # Move pivot to end
+    swap(nums, pIndex, right)
+ 
+    # elements less than the pivot will be pushed to the left of `pIndex`;
+    # elements more than the pivot will be pushed to the right of `pIndex`;
+    # equal elements can go either way
+    pIndex = left
+ 
+    # each time we find an element less than or equal to the pivot, `pIndex`
+    # is incremented, and that element would be placed before the pivot.
+    for i in range(left, right):
+        if nums[i] <= pivot:
+            swap(nums, i, pIndex)
+            pIndex = pIndex + 1
+ 
+    # Move pivot to its place
+    swap(nums, pIndex, right)
+ 
+    # return `pIndex` (index of the pivot element)
+    return pIndex
+ 
+ 
+# Returns the k'th smallest element in a list within `left…right`
+# (i.e., left <= k <= right). The search space within the list is
+# changing for each round – but the list is still the same size.
+# Thus, `k` does not need to be updated with each round.
+def quickSelect(nums, left, right, k):
+ 
+    # If the list contains only one element, return that element
+    if left == right:
+        return nums[left]
+ 
+    # select `pIndex` between left and right
+    pIndex = randint(left, right)
+ 
+    pIndex = partition(nums, left, right, pIndex)
+ 
+    # The pivot is in its sorted position
+    if k == pIndex:
+        return nums[k]
+ 
+    # if `k` is less than the pivot index
+    elif k < pIndex:
+        return quickSelect(nums, left, pIndex - 1, k)
+ 
+    # if `k` is more than the pivot index
+    else:
+        return quickSelect(nums, pIndex + 1, right, k)
+ 
+ 
+if __name__ == '__main__':
+ 
+    nums = [7, 4, 6, 3, 9, 1]
+    k = 2
+ 
+    print('k\'th smallest element is', quickSelect(nums, 0, len(nums) - 1, k - 1))
 
